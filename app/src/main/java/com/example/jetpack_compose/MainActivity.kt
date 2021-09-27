@@ -1,9 +1,11 @@
 package com.example.jetpack_compose
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
@@ -38,24 +40,38 @@ data class Message(val author: String, val body: String)
 
 @Composable
 fun MessageCard(msg: Message) {
-    Row (modifier = Modifier.padding(all = 8.dp)) {
+    Row(modifier = Modifier.padding(all = 8.dp)) {
         Image(
             painter = painterResource(id = R.drawable.daniel),
             contentDescription = "profile picture",
-            modifier = Modifier.size(40.dp).clip(CircleShape)
+            modifier = Modifier
+                .size(40.dp)
+                .clip(CircleShape)
+                .border(
+                    1.5.dp, MaterialTheme.colors.secondary, CircleShape
+                )
         )
 
         Spacer(modifier = Modifier.width(8.dp))
 
         Column() {
-            Text(text = msg.author)
+            Text(
+                text = msg.author,
+                color = MaterialTheme.colors.secondaryVariant,
+                style = MaterialTheme.typography.subtitle2
+            )
+
             Spacer(modifier = Modifier.height(4.dp))
-            Text(text = msg.body)
+
+            Surface(shape = MaterialTheme.shapes.medium, elevation = 1.dp) {
+                Text(text = msg.body, style = MaterialTheme.typography.body2)
+            }
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(name = "Light Theme")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true, name = "Dark Theme")
 @Composable
 fun DefaultPreview() {
     JetpackcomposeTheme {
